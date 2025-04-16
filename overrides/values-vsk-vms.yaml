@@ -1,0 +1,5 @@
+---
+vms:
+  server:
+    count: 2
+    role: server

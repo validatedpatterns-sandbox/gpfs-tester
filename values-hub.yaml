@@ -6,18 +6,11 @@ clusterGroup:
   namespaces:
     - vault
     - golang-external-secrets
-    - ansible-automation-platform
     - openshift-cnv
     - openshift-storage
-    - edge-gitops-vms
-    - aap-config
+    - gitops-vms
 
   subscriptions:
-    aap-operator:
-      name: ansible-automation-platform-operator
-      namespace: ansible-automation-platform
-      channel: stable-2.5
-
     openshift-virtualization:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
@@ -59,22 +52,6 @@ clusterGroup:
           - watch
 
   applications:
-    aap:
-      name: ansible-automation-platform
-      namespace: ansible-automation-platform
-      project: hub
-      chart: ansible-automation-platform-instance
-      chartVersion: 0.1.*
-
-    aap-config:
-      name: aap-config
-      namespace: aap-config
-      project: hub
-      chart: aap-config
-      chartVersion: 0.1.*
-      extraValueFiles:
-        - '$patternref/overrides/values-aap-config-aeg.yaml'
-
     vault:
       name: vault
       namespace: vault
@@ -105,14 +82,14 @@ clusterGroup:
       extraValueFiles:
         - '$patternref/overrides/values-odf-chart.yaml'
 
-    edge-gitops-vms:
-      name: edge-gitops-vms
-      namespace: edge-gitops-vms
+    gitops-vms:
+      name: gitops-vms
+      namespace: gitops-vms
       project: hub
       chart: edge-gitops-vms
       chartVersion: 0.2.*
       extraValueFiles:
-        - '$patternref/overrides/values-egv-vms.yaml'
+        - '$patternref/overrides/values-vsk-vms.yaml'
 
   # Only the hub cluster here - managed entities are edge nodes
   managedClusterGroups: []

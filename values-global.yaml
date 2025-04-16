@@ -1,6 +1,6 @@
 ---
 global:
-  pattern: ansible-edge-gitops
+  pattern: virtualization-starter-kit
 
   options:
     useCSV: false
