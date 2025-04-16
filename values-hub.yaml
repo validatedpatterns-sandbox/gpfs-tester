@@ -8,7 +8,7 @@ clusterGroup:
     - golang-external-secrets
     - openshift-cnv
     - openshift-storage
-    - gitops-vms
+    - edge-gitops-vms
 
   subscriptions:
     openshift-virtualization:
@@ -82,9 +82,9 @@ clusterGroup:
       extraValueFiles:
         - '$patternref/overrides/values-odf-chart.yaml'
 
-    gitops-vms:
-      name: gitops-vms
-      namespace: gitops-vms
+    edge-gitops-vms:
+      name: edge-gitops-vms
+      namespace: edge-gitops-vms
       project: hub
       chart: edge-gitops-vms
       chartVersion: 0.2.*
