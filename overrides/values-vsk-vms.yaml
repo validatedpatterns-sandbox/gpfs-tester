@@ -4,3 +4,5 @@ vms:
     count: 2
     role: server
     os: rhel9
+
+waitForMetalNode: false
