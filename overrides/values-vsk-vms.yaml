@@ -3,3 +3,4 @@ vms:
   server:
     count: 2
     role: server
+    os: rhel9
