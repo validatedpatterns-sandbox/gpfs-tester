@@ -90,6 +90,7 @@ clusterGroup:
       #chartVersion: 0.2.*
       repoURL: https://github.com/mhjacks/edge-gitops-vms-chart.git
       chartVersion: main
+      path: "."
       extraValueFiles:
         - '$patternref/overrides/values-vsk-vms.yaml'
 
