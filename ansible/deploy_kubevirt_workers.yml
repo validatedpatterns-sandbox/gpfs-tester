@@ -39,76 +39,72 @@
 
     - name: Set Dynamic MachineSet Facts
       ansible.builtin.set_fact:
-        #machineset_ami_id: "{{ cluster_machinesets.resources[0].spec.template.spec.providerSpec.value.ami.id }}"
-        #machineset_subnet: "{{ cluster_machinesets.resources[0].spec.template.spec.providerSpec.value.subnet.filters[0]['values'][0] }}"
-        #machineset_tags: "{{ cluster_machinesets.resources[0].spec.template.spec.providerSpec.value.tags }}"
-        #machineset_blockdevices: "{{ cluster_machinesets.resources[0].spec.template.spec.providerSpec.value.blockDevices }}"
-        #machineset_securitygroups: "{{ cluster_machinesets.resources[0].spec.template.spec.providerSpec.value.securityGroups }}"
-        #machineset_zone: "{{ cluster_machinesets.resources[0].spec.template.spec.providerSpec.value.placement.availabilityZone }}"
         infrastructure_name: "{{ cluster_info.resources[0].status.infrastructureName }}"
         infrastructure_region: "{{ cluster_info.resources[0].status.platformStatus.aws.region }}"
 
     - name: Define template for creating machineset
       ansible.builtin.set_fact:
         machineset_yaml: |
-          {% for res in cluster_machinesets.resources %}
           ---
-          apiVersion: machine.openshift.io/v1beta1
-          kind: MachineSet
-          metadata:
-            labels:
-              machine.openshift.io/cluster-api-cluster: "{{ infrastructure_name }}"
-              edge-gitops-role: kubevirt-worker
-            name: "{{ infrastructure_name }}-{{ machineset_name }}-{{ res.spec.template.spec.providerSpec.value.placement.availabilityZone }}"
-            namespace: openshift-machine-api
-          spec:
-            replicas: {{ machineset_replicas | int }}
-            selector:
-              matchLabels:
+          {% for res in cluster_machinesets.resources %}
+          - apiVersion: machine.openshift.io/v1beta1
+            kind: MachineSet
+            metadata:
+              labels:
                 machine.openshift.io/cluster-api-cluster: "{{ infrastructure_name }}"
-                machine.openshift.io/cluster-api-machineset: "{{ infrastructure_name }}-{{ machineset_name }}-{{ res.spec.template.spec.providerSpec.value.placement.availabilityZone }}"
-            template:
-              metadata:
-                labels:
+                edge-gitops-role: kubevirt-worker
+              name: "{{ infrastructure_name }}-{{ machineset_name }}-{{ res.spec.template.spec.providerSpec.value.placement.availabilityZone }}"
+              namespace: openshift-machine-api
+            spec:
+              replicas: {{ machineset_replicas | int }}
+              selector:
+                matchLabels:
                   machine.openshift.io/cluster-api-cluster: "{{ infrastructure_name }}"
-                  machine.openshift.io/cluster-api-machine-role: "{{ machineset_machine_role }}"
-                  machine.openshift.io/cluster-api-machine-type: "{{ machineset_machine_type }}"
                   machine.openshift.io/cluster-api-machineset: "{{ infrastructure_name }}-{{ machineset_name }}-{{ res.spec.template.spec.providerSpec.value.placement.availabilityZone }}"
-          {% if machineset_os is defined %}
-                  machine.openshift.io/os-id: {{ machineset_os }}
-          {% endif %}
-              spec:
+              template:
                 metadata:
-                  labels: {{ machineset_node_labels }}
-                providerSpec:
-                  value:
-                    ami:
-                      id: "{{ res.spec.template.spec.providerSpec.value.ami.id }}"
-                    apiVersion: awsproviderconfig.openshift.io/v1beta1
-                    blockDevices: {{ res.spec.template.spec.providerSpec.value.blockDevices }}
-                    credentialsSecret:
-                      name: aws-cloud-credentials
-                    deviceIndex: 0
-                    iamInstanceProfile:
-                      id: "{{ infrastructure_name }}-worker-profile"
-                    instanceType: "{{ machineset_instance_type }}"
-                    kind: AWSMachineProviderConfig
-                    placement:
-                      availabilityZone: "{{ res.spec.template.spec.providerSpec.value.placement.availabilityZone }}"
-                      region: "{{ infrastructure_region }}"
-                    securityGroups: {{ res..spec.template.spec.providerSpec.value.securityGroups }}
-                    subnet:
-                      filters:
-                        - name: tag:Name
-                          values:
-                            - "{{ res.spec.template.spec.providerSpec.value.subnet.filters[0  ]['values'][0] }}"
-                    tags: {{ res.spec.template.spec.providerSpec.value.tags }}
-                    userDataSecret:
-                      name: "{{ machineset_user_data_secret }}"
-                      namespace: "{{ machineset_user_data_namespace }}"
+                  labels:
+                    machine.openshift.io/cluster-api-cluster: "{{ infrastructure_name }}"
+                    machine.openshift.io/cluster-api-machine-role: "{{ machineset_machine_role }}"
+                    machine.openshift.io/cluster-api-machine-type: "{{ machineset_machine_type }}"
+                    machine.openshift.io/cluster-api-machineset: "{{ infrastructure_name }}-{{ machineset_name }}-{{ res.spec.template.spec.providerSpec.value.placement.availabilityZone }}"
+                spec:
+                  metadata:
+                    labels: {{ machineset_node_labels }}
+                  providerSpec:
+                    value:
+                      ami:
+                        id: "{{ res.spec.template.spec.providerSpec.value.ami.id }}"
+                      apiVersion: awsproviderconfig.openshift.io/v1beta1
+                      blockDevices: {{ res.spec.template.spec.providerSpec.value.blockDevices }}
+                      credentialsSecret:
+                        name: aws-cloud-credentials
+                      deviceIndex: 0
+                      iamInstanceProfile:
+                        id: "{{ infrastructure_name }}-worker-profile"
+                      instanceType: "{{ machineset_instance_type }}"
+                      kind: AWSMachineProviderConfig
+                      placement:
+                        availabilityZone: "{{ res.spec.template.spec.providerSpec.value.placement.availabilityZone }}"
+                        region: "{{ infrastructure_region }}"
+                      securityGroups: {{ res.spec.template.spec.providerSpec.value.securityGroups }}
+                      subnet:
+                        filters:
+                          - name: tag:Name
+                            values:
+                              - "{{ res.spec.template.spec.providerSpec.value.subnet.filters[0]['values'][0] }}"
+                      tags: {{ res.spec.template.spec.providerSpec.value.tags }}
+                      userDataSecret:
+                        name: "{{ machineset_user_data_secret }}"
+                        namespace: "{{ machineset_user_data_namespace }}"
           {% endfor %}
+
+    - name: Get definitions
+      ansible.builtin.set_fact:
+        machineset_definitions: "{{ machineset_yaml | from_yaml }}"
 
     - name: Create MachineSet
       kubernetes.core.k8s:
-        definition: "{{ machineset_yaml | from_yaml }}"
+        definition: "{{ item }}"
         state: present
+      loop: "{{ machineset_definitions }}"
