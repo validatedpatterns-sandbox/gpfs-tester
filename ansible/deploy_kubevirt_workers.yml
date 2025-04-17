@@ -24,11 +24,10 @@
         name: cluster
       register: cluster_info
 
-    - name: Assert Platform is AWS
-      ansible.builtin.assert:
-        fail_msg: Platform for OpenShift cluster must be AWS!
-        that:
-          - cluster_info.resources[0].status.platform == "AWS"
+    - name: End play if not AWS
+      ansible.builtin.meta: end_play
+      when:
+        - cluster_info.resources[0].status.platform not in [ "AWS" ]
 
     - name: Query MachineSets
       kubernetes.core.k8s_info:

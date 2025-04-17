@@ -9,12 +9,23 @@ clusterGroup:
     - openshift-cnv
     - openshift-storage
     - gitops-vms
+    - openshift-workload-availability
     - openshift-mtv
 
   subscriptions:
     openshift-virtualization:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
+      channel: stable
+
+    node-health-check:
+      name: node-healthcheck-operator
+      namespace: openshift-workload-availability
+      channel: stable
+
+    self-node-remediation:
+      name: self-node-remediation
+      namespace: openshift-workload-availability
       channel: stable
 
     openshift-data-foundation:
