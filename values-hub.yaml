@@ -83,7 +83,7 @@ clusterGroup:
         - '$patternref/overrides/values-odf-chart.yaml'
 
     gitops-vms:
-      name: edge-gitops-vms
+      name: gitops-vms
       namespace: gitops-vms
       project: hub
       chart: edge-gitops-vms

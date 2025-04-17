@@ -5,6 +5,8 @@ vms:
     role: server
     os: rhel9
 
+vmNamespace: gitops-vms
+
 serviceAccountName: gitops-vms-sa
 rbac:
   roleBindings:
