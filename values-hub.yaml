@@ -9,7 +9,9 @@ clusterGroup:
     - openshift-cnv
     - openshift-storage
     - gitops-vms
-    - openshift-workload-availability
+    - openshift-workload-availability:
+        operatorGroup: true
+        targetNamespaces:
     - openshift-mtv
 
   subscriptions:
