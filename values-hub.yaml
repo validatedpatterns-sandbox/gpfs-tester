@@ -9,6 +9,7 @@ clusterGroup:
     - openshift-cnv
     - openshift-storage
     - gitops-vms
+    - openshift-mtv
 
   subscriptions:
     openshift-virtualization:
@@ -19,6 +20,11 @@ clusterGroup:
     openshift-data-foundation:
       name: odf-operator
       namespace: openshift-storage
+
+    migration-toolkit-for-virtualization:
+      name: mtv-operator
+      namespace: openshift-mtv
+      channel: release-v2.8
 
   projects:
     - hub
