@@ -71,6 +71,14 @@ clusterGroup:
           - watch
 
   applications:
+    ensure-openshift-console-plugins:
+      name: ensure-openshift-console-plugins
+      namespace: openshift-console
+      project: hub
+      chart: ensure-openshift-console-plugins
+      chartVersion: 0.1.*
+      extraValueFiles:
+          - '$patternref/overrides/values-console-plugins.yaml'
     vault:
       name: vault
       namespace: vault
