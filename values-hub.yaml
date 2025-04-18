@@ -123,11 +123,11 @@ clusterGroup:
       name: node-health-check-operator
       namespace: openshift-workload-availability
       project: hub
-      chart: node-health-check-operator
+      # chart: node-health-check-operator
+      # chartVersion: 0.1.*
       repo: https://github.com/validatedpatterns/node-health-check-operator-chart
       chartVersion: main
       path: "."
-      # chartVersion: 0.1.*
 
   # Only the hub cluster here - managed entities are edge nodes
   managedClusterGroups: []
