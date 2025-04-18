@@ -78,7 +78,8 @@ clusterGroup:
       chart: ensure-openshift-console-plugins
       chartVersion: 0.1.*
       extraValueFiles:
-          - '$patternref/overrides/values-console-plugins.yaml'
+        - '$patternref/overrides/values-console-plugins.yaml'
+
     vault:
       name: vault
       namespace: vault
@@ -117,6 +118,15 @@ clusterGroup:
       chartVersion: 0.2.*
       extraValueFiles:
         - '$patternref/overrides/values-vsk-vms.yaml'
+
+    node-health-check-operator:
+      name: node-health-check-operator
+      namespace: openshift-workload-availability
+      project: hub
+      chart: node-health-check-operator
+      repo: https://github.com/validatedpatterns/node-health-check-operator-chart
+      chartVersion: main
+      # chartVersion: 0.1.*
 
   # Only the hub cluster here - managed entities are edge nodes
   managedClusterGroups: []
