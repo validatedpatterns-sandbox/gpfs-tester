@@ -126,6 +126,7 @@ clusterGroup:
       chart: node-health-check-operator
       repo: https://github.com/validatedpatterns/node-health-check-operator-chart
       chartVersion: main
+      path: "."
       # chartVersion: 0.1.*
 
   # Only the hub cluster here - managed entities are edge nodes
