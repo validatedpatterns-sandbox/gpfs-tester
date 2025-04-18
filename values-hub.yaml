@@ -125,7 +125,7 @@ clusterGroup:
       project: hub
       # chart: node-health-check-operator
       # chartVersion: 0.1.*
-      repo: https://github.com/validatedpatterns/node-health-check-operator-chart.git
+      repoURL: https://github.com/validatedpatterns/node-health-check-operator-chart.git
       chartVersion: main
       path: "."
 
