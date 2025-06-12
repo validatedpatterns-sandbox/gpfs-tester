@@ -25,7 +25,7 @@ clusterGroup:
       channel: stable-v1
 
     ibm-fusion:
-      name: openshift-fusion-access-operator
+      name: ibm-fusion-access-operator
       channel: alpha
       namespace: ibm-fusion-access
       source: test-fusion-access-operator
