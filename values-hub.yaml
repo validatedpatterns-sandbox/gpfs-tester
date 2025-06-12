@@ -24,12 +24,12 @@ clusterGroup:
       namespace: external-dns-operator
       channel: stable-v1
 
-    ibm-fusion:
-      name: openshift-fusion-access-operator
-      channel: alpha
-      namespace: ibm-fusion-access
-      source: test-fusion-access-operator
-      sourceNamespace: openshift-marketplace
+#    ibm-fusion:
+#      name: openshift-fusion-access-operator
+#      channel: alpha
+#      namespace: ibm-fusion-access
+#      source: test-fusion-access-operator
+#      sourceNamespace: openshift-marketplace
 
   projects:
     - hub
