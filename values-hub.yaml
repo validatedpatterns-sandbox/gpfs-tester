@@ -4,7 +4,9 @@ clusterGroup:
   isHubCluster: true
 
   namespaces:
-    - ibm-fusion-access
+    - ibm-fusion-access:
+        operatorGroup: true
+        targetNamespaces:
     - openshift-cnv
     - gitops-vms
     - vault
