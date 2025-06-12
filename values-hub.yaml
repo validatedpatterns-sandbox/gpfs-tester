@@ -27,6 +27,7 @@ clusterGroup:
     ibm-fusion:
       name: openshift-fusion-access-operator
       channel: alpha
+      namespace: ibm-fusion-access
       source: test-fusion-access-operator
       sourceNamespace: openshift-marketplace
 
