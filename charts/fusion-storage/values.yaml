@@ -7,35 +7,36 @@ fusionPullsecret:
   key: secret/data/hub/fusion-pullsecret
 
 serviceAccountName: storage-node-label-sa
-  rbac:
-    roles:
-      - name: label-storage-nodes
-        createRole: true
-        apiGroups:
-          - '""'
-        scope:
-          cluster: true
-        resources:
-          - nodes
-        verbs:
-          - "get"
-          - "list"
-          - "patch"
-          - "update"
-    roleBindings:
-      - name: label-storage-nodes
-        createBinding: true
-        scope:
-          cluster: true
-          namespace: ""
-        subjects:
-          kind: ServiceAccount
-          name: storage-node-label-sa
-          namespace: ibm-fusion-access
-          apiGroup: ""
-        roleRef:
-          kind: ClusterRole
-          name: label-storage-nodes
+
+rbac:
+  roles:
+    - name: label-storage-nodes
+      createRole: true
+      apiGroups:
+        - '""'
+      scope:
+        cluster: true
+      resources:
+        - nodes
+      verbs:
+        - "get"
+        - "list"
+        - "patch"
+        - "update"
+  roleBindings:
+    - name: label-storage-nodes
+      createBinding: true
+      scope:
+        cluster: true
+        namespace: ""
+      subjects:
+        kind: ServiceAccount
+        name: storage-node-label-sa
+        namespace: ibm-fusion-access
+        apiGroup: ""
+      roleRef:
+        kind: ClusterRole
+        name: label-storage-nodes
 
 job:
   image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
