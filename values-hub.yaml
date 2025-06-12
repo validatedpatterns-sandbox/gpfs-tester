@@ -76,10 +76,10 @@ clusterGroup:
       chartVersion: 0.1.*
 
     fusion-storage:
-       name: fusion-storage
-       namespace: ibm-fusion-access
-       project: hub
-       chart: charts/fusion-storage
+      name: fusion-storage
+      namespace: ibm-fusion-access
+      project: hub
+      chart: charts/fusion-storage
 
   # Only the hub cluster here - managed entities are edge nodes
   managedClusterGroups: []
