@@ -3,7 +3,7 @@ vmDefaults:
   os: rhel9
   # Change these for GPFS :)
   storageClassName: "gp3-csi"
-  accessModes: "ReadWriteOnce"
+  accessMode: "ReadWriteOnce"
   template: rhel9-server-large
   workload: server
   storage: 30Gi
