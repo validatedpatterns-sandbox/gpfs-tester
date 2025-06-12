@@ -1,0 +1,7 @@
+---
+secretStore:
+    name: vault-backend
+    kind: ClusterSecretStore
+   
+  fusionPullsecret:
+    key: secret/data/hub/fusion-pullsecret

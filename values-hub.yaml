@@ -4,9 +4,9 @@ clusterGroup:
   isHubCluster: true
 
   namespaces:
-    - ibm-fusion-access:
-        operatorGroup: true
-        targetNamespaces:
+#    - ibm-fusion-access:
+#        operatorGroup: true
+#        targetNamespaces:
     - openshift-cnv
     - gitops-vms
     - vault
@@ -74,6 +74,12 @@ clusterGroup:
       project: hub
       chart: external-dns-operator
       chartVersion: 0.1.*
+
+    fusion-storage:
+       name: fusion-storage
+       namespace: ibm-fusion-access
+       project: hub
+       chart: charts/fusion-storage
 
   # Only the hub cluster here - managed entities are edge nodes
   managedClusterGroups: []
