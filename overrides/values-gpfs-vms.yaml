@@ -1,0 +1,58 @@
+---
+vmDefaults:
+  os: rhel9
+  storageClassName: "gp3-csi"
+  template: rhel9-server-large
+  workload: server
+  storage: 30Gi
+  memory: 16Gi
+  cores: 4
+  serviceType: LoadBalancer
+  publishService: true
+
+vms:
+  mariadb:
+    count: 1
+    role: mariadb
+    ports:
+      - name: ssh
+        port: 22
+        protocol: TCP
+        targetPort: 22
+      - name: mysql
+        port: 3306
+        protocol: TCP
+        targetPort: 3306
+  postgres:
+    count: 1
+    role: postgres
+    ports:
+      - name: ssh
+        port: 22
+        protocol: TCP
+        targetPort: 22
+      - name: pgsql
+        port: 5432
+        protocol: TCP
+        targetPort: 5432
+
+vmNamespace: gitops-vms
+
+serviceAccountName: gitops-vms-sa
+rbac:
+  roleBindings:
+    - name: view-machine-api
+      createBinding: true
+      scope:
+        cluster: false
+        namespace: "openshift-machine-api"
+      subjects:
+        kind: ServiceAccount
+        name: gitops-vms-sa
+        namespace: gitops-vms
+        apiGroup: ""
+      roleRef:
+        kind: ClusterRole
+        name: view-machine-api
+
+waitForMetalNode: false

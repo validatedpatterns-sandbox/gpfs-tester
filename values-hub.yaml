@@ -4,15 +4,11 @@ clusterGroup:
   isHubCluster: true
 
   namespaces:
+    - openshift-cnv
+    - gitops-vms
     - vault
     - golang-external-secrets
-    - openshift-cnv
-    - openshift-storage
-    - gitops-vms
-    - openshift-workload-availability:
-        operatorGroup: true
-        targetNamespaces:
-    - openshift-mtv
+    - external-dns-operator
 
   subscriptions:
     openshift-virtualization:
@@ -20,65 +16,33 @@ clusterGroup:
       namespace: openshift-cnv
       channel: stable
 
-    node-health-check:
-      name: node-healthcheck-operator
-      namespace: openshift-workload-availability
-      channel: stable
-
-    self-node-remediation:
-      name: self-node-remediation
-      namespace: openshift-workload-availability
-      channel: stable
-
-    openshift-data-foundation:
-      name: odf-operator
-      namespace: openshift-storage
-
-    migration-toolkit-for-virtualization:
-      name: mtv-operator
-      namespace: openshift-mtv
-      channel: release-v2.8
+    external-dns:
+      name: external-dns-operator
+      namespace: external-dns-operator
+      channel: stable-v1
 
   projects:
     - hub
 
   imperative:
-    jobs:
-      - name: deploy-kubevirt-workers
-        playbook: ansible/deploy_kubevirt_workers.yml
-        verbosity: -vvv
-      - name: clean-golden-images
-        playbook: ansible/odf_fix_dataimportcrons.yml
-        verbosity: -vvv
-    clusterRoleYaml:
-      - apiGroups:
-          - "*"
-        resources:
-          - machinesets
-          - persistentvolumeclaims
-          - datavolumes
-          - dataimportcrons
-          - datasources
-        verbs:
-          - "*"
-      - apiGroups:
-          - "*"
-        resources:
-          - "*"
-        verbs:
-          - get
-          - list
-          - watch
+    jobs: []
 
   applications:
-    ensure-openshift-console-plugins:
-      name: ensure-openshift-console-plugins
-      namespace: openshift-console
+    openshift-cnv:
+      name: openshift-cnv
+      namespace: openshift-cnv
       project: hub
-      chart: ensure-openshift-console-plugins
+      chart: openshift-virtualization-instance
       chartVersion: 0.1.*
+
+    gitops-vms:
+      name: gitops-vms
+      namespace: gitops-vms
+      project: hub
+      chart: edge-gitops-vms
+      chartVersion: 0.2.*
       extraValueFiles:
-        - '$patternref/overrides/values-console-plugins.yaml'
+        - '$patternref/overrides/values-gpfs-vms.yaml'
 
     vault:
       name: vault
@@ -94,36 +58,11 @@ clusterGroup:
       chart: golang-external-secrets
       chartVersion: 0.1.*
 
-    openshift-cnv:
-      name: openshift-cnv
-      namespace: openshift-cnv
+    external-dns-operator:
+      name: external-dns-operator
+      namespace: external-dns-operator
       project: hub
-      chart: openshift-virtualization-instance
-      chartVersion: 0.1.*
-
-    odf:
-      name: odf
-      namespace: openshift-storage
-      project: hub
-      chart: openshift-data-foundations
-      chartVersion: 0.2.*
-      extraValueFiles:
-        - '$patternref/overrides/values-odf-chart.yaml'
-
-    gitops-vms:
-      name: gitops-vms
-      namespace: gitops-vms
-      project: hub
-      chart: edge-gitops-vms
-      chartVersion: 0.2.*
-      extraValueFiles:
-        - '$patternref/overrides/values-vsk-vms.yaml'
-
-    node-health-check-operator:
-      name: node-health-check-operator
-      namespace: openshift-workload-availability
-      project: hub
-      chart: node-health-check-operator
+      chart: external-dns-operator
       chartVersion: 0.1.*
 
   # Only the hub cluster here - managed entities are edge nodes

@@ -1,6 +1,6 @@
 ---
 global:
-  pattern: virtualization-starter-kit
+  pattern: gpfs-tester
 
   options:
     useCSV: false
