@@ -11,8 +11,12 @@ help:
 %:
 	make -f common/Makefile $*
 
-install upgrade deploy: operator-deploy post-install ## Install or upgrade the pattern via the operator
+install upgrade deploy: prep-catalog operator-deploy post-install ## Install or upgrade the pattern via the operator
 	echo "Installed/Upgraded"
+
+prep-catalog: ## Prepare catalog config
+	./scripts/add_fusion_catalog.sh
+	echo "Added fusion catalog config"
 
 post-install: ## Post-install tasks - load-secrets
 	make load-secrets
