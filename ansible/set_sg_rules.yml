@@ -1,7 +1,8 @@
 #!/usr/bin/env ansible-playbook
 ---
 - name: Set Security Group rules
-  host: localhost
+  hosts: localhost
+  connection: local
   gather_facts: false
   become: false
   vars:
