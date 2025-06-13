@@ -18,6 +18,10 @@ prep-catalog: ## Prepare catalog config
 	./scripts/add_fusion_catalog.sh
 	echo "Added fusion catalog config"
 
+add-mco: ## Add machine config operator config
+	./scripts/add_mco.sh
+	echo "Added Machine Config Operator config"
+
 post-install: ## Post-install tasks - load-secrets
 	make load-secrets
 	echo "Post-deploy complete"
