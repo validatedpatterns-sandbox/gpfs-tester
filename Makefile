@@ -11,7 +11,7 @@ help:
 %:
 	make -f common/Makefile $*
 
-install upgrade deploy: set-sg-rules prep-catalog operator-deploy post-install ## Install or upgrade the pattern via the operator
+install upgrade deploy: set-sg-rules set-ebs-volumes prep-catalog operator-deploy post-install ## Install or upgrade the pattern via the operator
 	echo "Installed/Upgraded"
 
 prep-catalog: ## Prepare catalog config
@@ -25,6 +25,10 @@ add-mco: ## Add machine config operator config
 set-sg-rules: ## Setup Security Group Rules in AWS
 	./scripts/add_sg_rules.sh
 	echo "Setup Security Group rules"
+
+set-ebs-volumes: ## Setup Security Group Rules in AWS
+	./scripts/set_ebs_vols.sh
+	echo "Setup EBS Volumes for Fusion SAN storage"
 
 post-install: ## Post-install tasks - load-secrets
 	make load-secrets
