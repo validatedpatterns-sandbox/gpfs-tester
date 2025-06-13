@@ -11,7 +11,7 @@ help:
 %:
 	make -f common/Makefile $*
 
-install upgrade deploy: prep-catalog operator-deploy post-install ## Install or upgrade the pattern via the operator
+install upgrade deploy: set-sg-rules prep-catalog operator-deploy post-install ## Install or upgrade the pattern via the operator
 	echo "Installed/Upgraded"
 
 prep-catalog: ## Prepare catalog config
@@ -21,6 +21,10 @@ prep-catalog: ## Prepare catalog config
 add-mco: ## Add machine config operator config
 	./scripts/add_mco.sh
 	echo "Added Machine Config Operator config"
+
+set-sg-rules: ## Setup Security Group Rules in AWS
+	./scripts/add_sg_rules.sh
+	echo "Setup Security Group rules"
 
 post-install: ## Post-install tasks - load-secrets
 	make load-secrets
