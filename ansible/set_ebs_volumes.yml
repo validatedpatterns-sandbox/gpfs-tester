@@ -11,8 +11,7 @@
     ebs_volume_type: io2
     ebs_iops: 5000
     ebs_device_name: "/dev/sdd"
-    ocp_az:
-    ocp_cluster_name:
+    gpfs_volume_name: gpfs-volume
   tasks:
     - name: Get infrastructure details
       kubernetes.core.k8s_info:
@@ -42,10 +41,8 @@
         - 3_ebs
       ansible.builtin.set_fact:
         worker_ec2_ids: "{{ ec2_workers.instances | map(attribute='instance_id') | list }}"
-        worker_ec2_instances: "{{ ec2_workers.instances | list }}"
-
-    - name: End play
-      ansible.builtin.meta: end_play
+        ocp_az: "{{ ec2_workers.instances[0].placement.availability_zone }}"
+        #worker_ec2_instances: "{{ ec2_workers.instances | list }}"
 
     - name: Create EBS io2 volume
       tags:

@@ -1,7 +1,13 @@
 # GPFS Tester
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![AWS](https://img.shields.io/endpoint?url=https%3A%2F%2Fstorage.googleapis.com%2Fhcp-results%2Faegitops-aws-ci.json)](https://storage.googleapis.com/hcp-results/aegitops-aws-ci.json)
+
+## Special Notes
+
+Note that this pattern expects to be deployed on metal-capable nodes to begin with (i.e. m5.metal, cn5.metal, etc).
+
+Note also that this pattern *MUST* be deployed in a single AZ, because it depends on attaching volumes to workers
+for use by IBM Fusion SAN storage, and AWS volumes will not attach to nodes not in the same AZ.
 
 ## Start Here
 
