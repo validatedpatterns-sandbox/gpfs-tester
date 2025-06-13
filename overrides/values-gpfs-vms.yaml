@@ -1,9 +1,9 @@
 ---
 vmDefaults:
-  os: rhel9
   # Change these for GPFS :)
   storageClassName: "gp3-csi"
   accessMode: "ReadWriteOnce"
+  os: rhel9
   template: rhel9-server-large
   workload: server
   storage: 30Gi
@@ -28,6 +28,34 @@ vms:
   postgres:
     count: 1
     role: postgres
+    ports:
+      - name: ssh
+        port: 22
+        protocol: TCP
+        targetPort: 22
+      - name: pgsql
+        port: 5432
+        protocol: TCP
+        targetPort: 5432
+  mariadb8:
+    count: 1
+    role: mariadb8
+    os: rhel8
+    template: rhel8-server-large
+    ports:
+      - name: ssh
+        port: 22
+        protocol: TCP
+        targetPort: 22
+      - name: mysql
+        port: 3306
+        protocol: TCP
+        targetPort: 3306
+  postgres8:
+    count: 1
+    role: postgres8
+    os: rhel8
+    template: rhel8-server-large
     ports:
       - name: ssh
         port: 22
