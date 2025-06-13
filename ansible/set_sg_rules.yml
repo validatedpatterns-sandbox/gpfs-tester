@@ -1,0 +1,61 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Set Security Group rules
+  host: localhost
+  gather_facts: false
+  become: false
+  vars:
+    aws_profile: default
+  tasks:
+    - name: Get infrastructure details
+      kubernetes.core.k8s_info:
+        kind: infrastructure
+        api_version: config.openshift.io/v1
+      register: infra
+
+    - name: Parse response for facts
+      ansible.builtin.set_fact:
+        ocp_region: "{{ infra.resources[0].status.platformStatus.aws.region }}"
+
+    # See https://www.ibm.com/docs/en/scalecontainernative/5.2.2?topic=aws-red-hat-openshift-configuration#authorize-rosa-worker-security-group-to-allow-ibm-storage-scale-container-native-ports
+    - name: Gather security group info for workers
+      tags:
+        - 2_aws
+      amazon.aws.ec2_security_group_info:
+        profile: "{{ aws_profile }}"
+        region: "{{ ocp_region }}"
+        filters:
+          "tag:sigs.k8s.io/cluster-api-provider-aws/role": "node"
+      register: sg_info
+
+    - name: Debug sg_info
+      tags:
+        - 2_aws
+      ansible.builtin.debug:
+        msg: "{{ sg_info }}"
+
+    - name: Set sg id
+      tags:
+        - 2_aws
+      ansible.builtin.set_fact:
+        sg_worker_id: "{{ sg_info.security_groups[0].group_id }}"
+        sg_worker_name: "{{ sg_info.security_groups[0].group_name }}"
+        sg_worker_description: "{{ sg_info.security_groups[0].description }}"
+
+    - name: Open up default security groups so gpfs can work in AWS
+      tags:
+        - 2_aws
+      amazon.aws.ec2_security_group:
+        profile: "{{ aws_profile }}"
+        region: "{{ ocp_region }}"
+        name: "{{ sg_worker_name }}"
+        description: "{{ sg_worker_description }}"
+        rules:
+          - proto: tcp
+            ports:
+              - 12345
+              - 1191
+              - 60000-61000
+            group_id: "{{ sg_worker_id }}"
+            rule_desc: GPFS ports
+        purge_rules: false
