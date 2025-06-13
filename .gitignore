@@ -9,3 +9,4 @@ vault.init
 pattern-vault.init.bak
 super-linter.log
 .vscode
+.ansible

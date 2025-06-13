@@ -1,0 +1,75 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Set EBS Volumes for Fusion Access to use
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  vars:
+    aws_profile: default
+    ebs_volume_size: 300
+    ebs_volume_type: io2
+    ebs_iops: 5000
+    ebs_device_name: "/dev/sdd"
+    ocp_az:
+    ocp_cluster_name:
+  tasks:
+    - name: Get infrastructure details
+      kubernetes.core.k8s_info:
+        kind: infrastructure
+        api_version: config.openshift.io/v1
+      register: infra
+
+    - name: Parse response for facts
+      ansible.builtin.set_fact:
+        ocp_region: "{{ infra.resources[0].status.platformStatus.aws.region }}"
+        ocp_cluster_name: "{{ infra.resources[0].status.infrastructureName }}"
+
+    # FIXME(bandini): this will need to be more robust
+    - name: Find OpenShift EC2 Instances
+      tags:
+        - 3_ebs
+      amazon.aws.ec2_instance_info:
+        profile: "{{ aws_profile }}"
+        region: "{{ ocp_region }}"
+        filters:
+          "tag:Name": "{{ ocp_cluster_name }}*worker*"
+          "instance-state-name": "running"
+      register: ec2_workers
+
+    - name: Set EC2 workers instance IDs
+      tags:
+        - 3_ebs
+      ansible.builtin.set_fact:
+        worker_ec2_ids: "{{ ec2_workers.instances | map(attribute='instance_id') | list }}"
+        worker_ec2_instances: "{{ ec2_workers.instances | list }}"
+
+    - name: End play
+      ansible.builtin.meta: end_play
+
+    - name: Create EBS io2 volume
+      tags:
+        - 3_ebs
+      amazon.aws.ec2_vol:
+        profile: "{{ aws_profile }}"
+        region: "{{ ocp_region }}"
+        availability_zone: "{{ ocp_az }}"
+        volume_size: "{{ ebs_volume_size }}"
+        volume_type: "{{ ebs_volume_type }}"
+        multi_attach: true
+        iops: "{{ ebs_iops }}"
+        tags:
+          Name: "{{ gpfs_volume_name }}"
+      register: ebs_volume
+
+    - name: Attach EBS volume to workers
+      tags:
+        - 3_ebs
+      amazon.aws.ec2_vol:
+        profile: "{{ aws_profile }}"
+        region: "{{ ocp_region }}"
+        instance: "{{ item }}"
+        id: "{{ ebs_volume.volume_id }}"
+        device_name: "{{ ebs_device_name }}"
+      loop: "{{ worker_ec2_ids }}"
+      when: ebs_volume.volume_id is defined
