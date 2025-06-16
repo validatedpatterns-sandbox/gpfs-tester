@@ -1,8 +1,8 @@
 ---
 vmDefaults:
   # Change these for GPFS :)
-  storageClassName: "gp3-csi"
-  accessMode: "ReadWriteOnce"
+  storageClassName: ibm-spectrum-scale-internal
+  accessMode: ReadWriteMany
   os: rhel9
   template: rhel9-server-large
   workload: server
@@ -39,7 +39,7 @@ vms:
         targetPort: 5432
   mariadb8:
     count: 1
-    role: mariadb8
+    role: mariadb
     os: rhel8
     template: rhel8-server-large
     ports:
@@ -53,7 +53,7 @@ vms:
         targetPort: 3306
   postgres8:
     count: 1
-    role: postgres8
+    role: postgres
     os: rhel8
     template: rhel8-server-large
     ports:
