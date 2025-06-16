@@ -9,6 +9,7 @@ spec:
     spec:
       containers:
       - image: {{ .Values.job.image }}
+        name: make-localdisk
         command:
         - /bin/bash
         - -c
