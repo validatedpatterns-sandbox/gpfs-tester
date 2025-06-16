@@ -80,6 +80,9 @@ clusterGroup:
       namespace: ibm-fusion-access
       project: hub
       path: charts/fusion-storage
+      syncPolicy:
+        syncOptions:
+          - SkipDryRunOnMissingResource=true
 
   # Only the hub cluster here - managed entities are edge nodes
   managedClusterGroups: []
