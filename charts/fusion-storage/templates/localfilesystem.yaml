@@ -2,6 +2,7 @@ apiVersion: scale.spectrum.ibm.com/v1beta1
 kind: Filesystem
 metadata:
   name: localfilesystem
+  namespace: ibm-spectrum-scale
   annotations:
     argocd.argoproj.io/sync-wave: "15"
 spec:
