@@ -16,7 +16,7 @@ spec:
         - |
           # Early exit if the shareddisk exists
           # could parameterize disk name to make it a bit more flexible
-          if $( oc get LocalDisk shareddisk1 ); then
+          if $( oc get LocalDisk shareddisk1 -n ibm-spectrum-scale ); then
             exit 0
           fi
 
@@ -26,6 +26,7 @@ spec:
           kind: LocalDisk
           metadata:
             name: shareddisk1
+            namespace: ibm-spectrum-scale
           spec:
             # After successful creation of the local disk, this parameter is no longer used
             device: /dev/nvme1n1
