@@ -35,7 +35,7 @@ spec:
                 operator: Exists
                 name: label-storage-nodes
           EOF
-    dnsPolicy: ClusterFirst
-    restartPolicy: Never
-    serviceAccountName: {{ .Values.serviceAccountName }}
-    terminationGracePeriodSeconds: 400
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      terminationGracePeriodSeconds: 400
