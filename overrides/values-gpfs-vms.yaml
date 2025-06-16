@@ -6,7 +6,7 @@ vmDefaults:
   os: rhel9
   template: rhel9-server-large
   workload: server
-  storage: 30Gi
+  storage: 40Gi
   memory: 16Gi
   cores: 4
   serviceType: LoadBalancer
