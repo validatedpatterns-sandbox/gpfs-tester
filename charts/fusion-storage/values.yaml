@@ -16,6 +16,7 @@ rbac:
       createRole: true
       apiGroups:
         - '""'
+        - scale.spectrum.ibm.com
       scope:
         cluster: true
       resources:
