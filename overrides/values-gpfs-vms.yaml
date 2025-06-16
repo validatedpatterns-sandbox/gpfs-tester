@@ -1,7 +1,7 @@
 ---
 vmDefaults:
   # Change these for GPFS :)
-  storageClassName: ibm-spectrum-scale-internal
+  storageClassName: ibm-spectrum-scale-virt
   accessMode: ReadWriteMany
   os: rhel9
   template: rhel9-server-large
