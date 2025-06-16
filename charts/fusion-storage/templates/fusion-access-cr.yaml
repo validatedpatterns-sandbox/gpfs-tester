@@ -3,6 +3,8 @@ apiVersion: fusion.storage.openshift.io/v1alpha1
 kind: FusionAccess
 metadata:
   name: fusionaccess-object
+  annotations:
+    argocd.argoproj.io/sync-wave: "-25" 
 spec:
   storageScaleVersion: {{ .Values.storageScaleVersion | quote }}
   storageDeviceDiscovery:
