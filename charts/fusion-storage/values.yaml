@@ -21,7 +21,7 @@ rbac:
         cluster: true
       resources:
         - nodes
-        - LocalDisk
+        - localdisks
       verbs:
         - "get"
         - "list"
