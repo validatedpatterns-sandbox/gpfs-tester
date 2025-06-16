@@ -20,11 +20,13 @@ rbac:
         cluster: true
       resources:
         - nodes
+        - LocalDisk
       verbs:
         - "get"
         - "list"
         - "patch"
         - "update"
+        - "create"
   roleBindings:
     - name: label-storage-nodes
       createBinding: true
