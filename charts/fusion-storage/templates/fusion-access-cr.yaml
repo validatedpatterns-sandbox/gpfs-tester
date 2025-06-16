@@ -5,6 +5,7 @@ metadata:
   name: fusionaccess-object
   annotations:
     argocd.argoproj.io/sync-wave: "-25" 
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=True
 spec:
   storageScaleVersion: {{ .Values.storageScaleVersion | quote }}
   storageDeviceDiscovery:
