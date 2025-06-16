@@ -44,7 +44,8 @@ rbac:
         name: label-storage-nodes
 
 job:
-  image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+  #image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+  image: quay.io/hybridcloudpatterns/imperative-container:v1
 
 fusionStorage:
   namespace: ibm-fusion-access
