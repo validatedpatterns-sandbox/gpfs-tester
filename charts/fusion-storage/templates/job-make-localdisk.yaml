@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  name: job-make-localdisk
+spec:
+  template:
+    spec:
+      containers:
+      - image: {{ .Values.job.image }}
+        command:
+        - /bin/bash
+        - -c
+        - |
+          # Early exit if the shareddisk exists
+          # could parameterize disk name to make it a bit more flexible
+          if $( oc get LocalDisk shareddisk1 ); then
+            exit 0
+          fi
+
+          FS_NODE=$(oc get nodes -o json  | jq 'first(.items)[0].metadata.name')
+          oc apply -f=- << EOF
+          apiVersion: scale.spectrum.ibm.com/v1beta1
+          kind: LocalDisk
+          metadata:
+            name: shareddisk1
+          spec:
+            # After successful creation of the local disk, this parameter is no longer used
+            device: /dev/nvme1n1
+            node: $FS_NODE
+            nodeConnectionSelector:
+              matchExpressions:
+              - key: node-role.kubernetes.io/worker
+                operator: Exists
+                name: label-storage-nodes
+          EOF
+    dnsPolicy: ClusterFirst
+    restartPolicy: Never
+    serviceAccountName: {{ .Values.serviceAccountName }}
+    terminationGracePeriodSeconds: 400
