@@ -5,7 +5,7 @@ metadata:
   name: ibm-spectrum-scale
   annotations:
     argocd.argoproj.io/sync-wave: "5"
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=True
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   pmcollector:
     nodeSelector:
