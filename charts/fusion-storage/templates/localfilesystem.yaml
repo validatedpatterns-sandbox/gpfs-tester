@@ -5,6 +5,8 @@ metadata:
   namespace: ibm-spectrum-scale
   annotations:
     argocd.argoproj.io/sync-wave: "15"
+  labels:
+    scale.spectrum.ibm.com/allowDelete: ""
 spec:
   local:
     blockSize: 4M
