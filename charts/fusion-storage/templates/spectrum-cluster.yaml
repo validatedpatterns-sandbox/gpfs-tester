@@ -13,7 +13,7 @@ spec:
   daemon:
     nsdDevicesConfig:
       localDevicePaths:
-      - devicePath: /dev/disk/by-id/*
+      - devicePath: /dev/nvme*
         deviceType: generic
     clusterProfile:
       controlSetxattrImmutableSELinux: "yes"
