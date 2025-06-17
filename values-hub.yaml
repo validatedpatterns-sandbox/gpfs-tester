@@ -25,7 +25,8 @@ clusterGroup:
       channel: stable-v1
 
     benchmark:
-      name: benchmark-operator
+      name: ripsaw
+      source: community-operators
       namespace: openshift-operators
       channel: alpha
 
