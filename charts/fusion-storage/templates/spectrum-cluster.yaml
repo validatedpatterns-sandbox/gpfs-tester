@@ -37,5 +37,6 @@ spec:
   license:
     accept: true
     license: data-management
-  networkPolicy: {}
-
+  # Cannot use networkPolicy as it is broken on AWS
+  # See OCPNAS-63
+  # networkPolicy: {}
