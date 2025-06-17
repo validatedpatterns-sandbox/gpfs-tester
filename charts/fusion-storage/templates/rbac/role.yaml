@@ -5,6 +5,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 {{- if $value.scope.cluster }}
 kind: ClusterRole
 metadata:
+  annotations:
+    argocd.argoproj.io/hook: PreSync
   name: {{ .name }}
 {{- else }}
 kind: Role

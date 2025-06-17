@@ -2,6 +2,8 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: job-label-storage-nodes
+  annotations:
+    argocd.argoproj.io/hook: PreSync
 spec:
   template:
     spec:
