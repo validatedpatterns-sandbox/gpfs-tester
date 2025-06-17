@@ -81,8 +81,7 @@ clusterGroup:
       project: hub
       path: charts/fusion-storage
       syncPolicy:
-        automated:
-          enabled: true
+        automated: {}
         syncOptions:
           - SkipDryRunOnMissingResource=true
 
