@@ -24,6 +24,11 @@ clusterGroup:
       namespace: external-dns-operator
       channel: stable-v1
 
+    benchmark:
+      name: benchmark-operator
+      namespace: openshift-operators
+      channel: alpha
+
 #    ibm-fusion:
 #      name: openshift-fusion-access-operator
 #      channel: alpha
