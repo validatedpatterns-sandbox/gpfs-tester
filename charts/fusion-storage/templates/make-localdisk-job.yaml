@@ -35,7 +35,7 @@ spec:
 
           while [ 1 ];
           do
-            oc get LocalDisk shareddisk1 -n ibm-spectrum-scale -o json | jq -e '.status.conditions[] | select(.type =  = "Ready" and .status == "False"'
+            oc get LocalDisk shareddisk1 -n ibm-spectrum-scale -o json | jq -e '.status.conditions[] | select(.type == "Ready" and .status == "False")'
             if [ "$?" == 0 ]; then
               echo "Disk is ready, exiting"
               exit 0
