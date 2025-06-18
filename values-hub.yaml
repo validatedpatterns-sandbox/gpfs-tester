@@ -87,6 +87,8 @@ clusterGroup:
       project: hub
       path: charts/fusion-storage
       syncPolicy:
+        retryStrategy:
+          limit: 200
         automated: {}
         syncOptions:
           - SkipDryRunOnMissingResource=true
