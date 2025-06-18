@@ -16,7 +16,7 @@ spec:
         - -c
         - |
           while [ 1 ]; do
-            if $( oc get -n ibm-spectrum-scale filesystem localfilesystem -o json | jq '.status.conditions[0].type' | grep Success )
+            if $( oc get -n ibm-spectrum-scale filesystem localfilesystem -o json | jq '.status.conditions[0].type' | grep Success ); then
               exit 0
             fi
           done
