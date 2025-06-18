@@ -20,7 +20,7 @@ spec:
             exit 0
           fi
 
-          FS_NODE=$(oc get nodes -o json  | jq 'first(.items)[0].metadata.name')
+          FS_NODE=$(oc get nodes -l node-role.kubernetes.io/worker -o json  | jq 'first(.items)[0].metadata.name')
           oc apply -f=- << EOF
           apiVersion: scale.spectrum.ibm.com/v1beta1
           kind: LocalDisk
