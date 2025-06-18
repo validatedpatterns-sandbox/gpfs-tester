@@ -16,7 +16,7 @@ spec:
         - -c
         - |
           while [ 1 ]; do
-            oc get -n ibm-spectrum-scale filesystem localfilesystem -o json | jq -e '.status.conditions[] | select(.type == "Success" and .status == "True" and .reason == "Created"'
+            oc get -n ibm-spectrum-scale filesystem localfilesystem -o json | jq -e '.status.conditions[] | select(.type == "Success" and .status == "True" and .reason == "Created")'
             if [ "$?" == "0" ]; then
               exit 0
             else
