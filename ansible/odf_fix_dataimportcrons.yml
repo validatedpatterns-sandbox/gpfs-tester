@@ -13,6 +13,7 @@
     dataimportcron_cleanup: false
     image_cleanup_namespace: "openshift-virtualization-os-images"
     cluster_version: "{{ global['clusterVersion'] | default('UNSET') }}"
+    desired_virt_sc: ibm-spectrum-scale-virt
   tasks:
     - name: Check cluster version
       ansible.builtin.debug:
@@ -20,7 +21,7 @@
 
     - name: Exit if normal version check is not right
       ansible.builtin.meta: end_play
-      when: cluster_version not in [ '4.17', '4.16', 'UNSET' ]
+      when: cluster_version not in [ '4.18', '4.17', '4.16', 'UNSET' ]
 
     - name: Find default storageclass
       ansible.builtin.shell: |
@@ -47,7 +48,7 @@
           ansible.builtin.set_fact:
             dataimportcron_cleanup: true
           when:
-            - default_virt_sc.metadata.name == "ocs-storagecluster-ceph-rbd-virtualization"
+            - default_virt_sc.metadata.name == desired_virt_sc
             - default_sc.metadata.name != default_virt_sc.metadata.name
       rescue:
         - name: Note that we exited
