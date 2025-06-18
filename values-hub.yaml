@@ -41,28 +41,28 @@ clusterGroup:
     - hub
 
   imperative:
-    jobs:
-      - name: clean-golden-images
-        playbook: ansible/odf_fix_dataimportcrons.yml
-        verbosity: -vvv
-    clusterRoleYaml:
-      - apiGroups:
-          - "*"
-        resources:
-          - machinesets
-          - datavolumes
-          - datasources
-          - dataimportcrons
-        verbs:
-          - "*"
-      - apiGroups:
-          - "*"
-        resources:
-          - "*"
-        verbs:
-          - get
-          - list
-          - watch
+    jobs: []
+#      - name: clean-golden-images
+#        playbook: ansible/odf_fix_dataimportcrons.yml
+#        verbosity: -vvv
+#    clusterRoleYaml:
+#      - apiGroups:
+#          - "*"
+#        resources:
+#          - machinesets
+#          - datavolumes
+#          - datasources
+#          - dataimportcrons
+#        verbs:
+#          - "*"
+#      - apiGroups:
+#          - "*"
+#        resources:
+#          - "*"
+#        verbs:
+#          - get
+#          - list
+#          - watch
 
   applications:
     openshift-cnv:
