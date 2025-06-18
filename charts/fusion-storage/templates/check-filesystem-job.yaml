@@ -16,7 +16,8 @@ spec:
         - -c
         - |
           while [ 1 ]; do
-            if [ oc get -n ibm-spectrum-scale filesystem localfilesystem -o json | jq '.status.conditions[0].type' | grep Success ]; then
+            oc get -n ibm-spectrum-scale filesystem localfilesystem -o json | jq '.status.conditions[0].type' | grep Success
+            if [ "$?" == "0" ];
               exit 0
             else
               echo "Not ready, checking again in 5 seconds"
