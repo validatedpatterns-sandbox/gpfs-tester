@@ -93,7 +93,7 @@ clusterGroup:
       annotations:
         argocd.argoproj.io/sync-wave: "5"
       syncPolicy:
-        retryStrategy:
+        retry:
           limit: 200
         automated: {}
         syncOptions:
