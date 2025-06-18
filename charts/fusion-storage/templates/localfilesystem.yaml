@@ -5,6 +5,7 @@ metadata:
   namespace: ibm-spectrum-scale
   annotations:
     argocd.argoproj.io/sync-wave: "15"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
   labels:
     scale.spectrum.ibm.com/allowDelete: ""
 spec:
