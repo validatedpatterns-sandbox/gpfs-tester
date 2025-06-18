@@ -18,6 +18,8 @@ spec:
           # Early exit if the shareddisk exists
           # could parameterize disk name to make it a bit more flexible
           if $( oc get LocalDisk shareddisk1 -n ibm-spectrum-scale ); then
+            echo "Localdisk shareddisk1 exists, waiting a few seconds for it to settle"
+            sleep 10
             exit 0
           fi
 
