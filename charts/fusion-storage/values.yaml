@@ -22,6 +22,7 @@ rbac:
       resources:
         - nodes
         - localdisks
+        - filesystems
       verbs:
         - "get"
         - "list"
