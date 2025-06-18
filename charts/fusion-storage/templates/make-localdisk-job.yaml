@@ -15,14 +15,6 @@ spec:
         - /bin/bash
         - -c
         - |
-          # Early exit if the shareddisk exists
-          # could parameterize disk name to make it a bit more flexible
-          if $( oc get LocalDisk shareddisk1 -n ibm-spectrum-scale ); then
-            echo "Localdisk shareddisk1 exists, waiting a few seconds for it to settle"
-            sleep 10
-            exit 0
-          fi
-
           FS_NODE=$(oc get nodes -l node-role.kubernetes.io/worker -o json  | jq 'first(.items)[0].metadata.name')
           oc apply -f=- << EOF
           apiVersion: scale.spectrum.ibm.com/v1beta1
@@ -40,6 +32,19 @@ spec:
                 operator: Exists
                 name: label-storage-nodes
           EOF
+
+          while [ 1 ];
+          do
+            oc get LocalDisk shareddisk1 -n ibm-spectrum-scale -o json | jq -e '.status.conditions[] | select(.type =  = "Ready" and .status == "False"'
+            if [ "$?" == 0 ]; then
+              echo "Disk is ready, exiting"
+              exit 0
+            else
+              echo "Disk is not yet ready, waiting..."
+              sleep 5
+            fi
+          done
+
       dnsPolicy: ClusterFirst
       restartPolicy: Never
       serviceAccountName: {{ .Values.serviceAccountName }}
