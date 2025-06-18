@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  name: job-check-filesystem
+spec:
+  template:
+    spec:
+      containers:
+      - image: {{ .Values.job.image }}
+        name: check-filesystem
+        command:
+        - /bin/bash
+        - -c
+        - |
+          while [ 1 ]; do
+            if $( oc get -n ibm-spectrum-scale filesystem localfilesystem -o json | jq '.status.conditions[0].type' | grep Success )
+              exit 0
+            fi
+          done
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      terminationGracePeriodSeconds: 3600
