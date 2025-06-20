@@ -1,0 +1,21 @@
+---
+- name: Register systems via subscription manager
+  hosts: all
+  gather_facts: false
+  become: true
+  vars:
+    subscription_manager_no_log_setting: true
+  tasks:
+    - name: Check subscription status, can fail
+      ansible.builtin.command: |-
+        subscription-manager status
+      register: subman_status
+      changed_when: false
+      ignore_errors: true
+
+    - name: Register node since it is not registered
+      ansible.builtin.command:
+        subscription-manager register --username "{{ subscription_manager_rhsm_username }}" --password "{{ subscription_manager_rhsm_password }}"
+      no_log: "{{ subscription_manager_no_log_setting }}"
+      changed_when: true
+      when: subman_status is failed
