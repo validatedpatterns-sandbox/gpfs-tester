@@ -7,7 +7,7 @@
   become: false
   vars:
     aws_profile: default
-    ebs_volume_size: 300
+    ebs_volume_size: 750
     ebs_volume_type: io2
     ebs_iops: 5000
     ebs_device_name: "/dev/sdd"
