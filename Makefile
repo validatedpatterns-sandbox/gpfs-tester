@@ -14,7 +14,7 @@ help:
 baremetalinstall upgrade deploy: prep-catalog operator-deploy post-install ## Install or upgrade the pattern via the operator (on baremetal)
 	echo "Installed/Upgraded (for baremetal)"
 
-install upgrade deploy: set-sg-rules set-ebs-volumes prep-catalog operator-deploy post-install ## Install or upgrade the pattern via the operator
+install upgrade deploy: set-sg-rules set-ebs-volumes operator-deploy post-install ## Install or upgrade the pattern via the operator
 	echo "Installed/Upgraded"
 
 prep-catalog: ## Prepare catalog config

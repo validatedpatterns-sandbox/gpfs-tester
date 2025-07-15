@@ -1,0 +1,124 @@
+---
+clusterGroup:
+  name: hub
+  isHubCluster: true
+
+  namespaces:
+#    - ibm-fusion-access:
+#        operatorGroup: true
+#        targetNamespaces:
+    - openshift-cnv
+    - gitops-vms
+    - vault
+    - golang-external-secrets
+    - external-dns-operator
+
+  subscriptions:
+    openshift-virtualization:
+      name: kubevirt-hyperconverged
+      namespace: openshift-cnv
+      channel: stable
+
+    external-dns:
+      name: external-dns-operator
+      namespace: external-dns-operator
+      channel: stable-v1
+
+    benchmark:
+      name: ripsaw
+      source: community-operators
+      namespace: openshift-operators
+      channel: alpha
+
+#    ibm-fusion:
+#      name: openshift-fusion-access-operator
+#      channel: alpha
+#      namespace: ibm-fusion-access
+#      source: test-fusion-access-operator
+#      sourceNamespace: openshift-marketplace
+
+  projects:
+    - hub
+
+  imperative:
+    jobs: []
+#      - name: clean-golden-images
+#        playbook: ansible/odf_fix_dataimportcrons.yml
+#        verbosity: -vvv
+#    clusterRoleYaml:
+#      - apiGroups:
+#          - "*"
+#        resources:
+#          - machinesets
+#          - datavolumes
+#          - datasources
+#          - dataimportcrons
+#        verbs:
+#          - "*"
+#      - apiGroups:
+#          - "*"
+#        resources:
+#          - "*"
+#        verbs:
+#          - get
+#          - list
+#          - watch
+
+  applications:
+    openshift-cnv:
+      name: openshift-cnv
+      namespace: openshift-cnv
+      project: hub
+      chart: openshift-virtualization-instance
+      annotations:
+        argocd.argoproj.io/sync-wave: "10"
+      chartVersion: 0.1.*
+
+    gitops-vms:
+      name: gitops-vms
+      namespace: gitops-vms
+      project: hub
+      chart: edge-gitops-vms
+      chartVersion: 0.2.*
+      annotations:
+        argocd.argoproj.io/sync-wave: "15"
+      extraValueFiles:
+        - '$patternref/overrides/values-gpfs-vms.yaml'
+
+    vault:
+      name: vault
+      namespace: vault
+      project: hub
+      chart: hashicorp-vault
+      chartVersion: 0.1.*
+
+    golang-external-secrets:
+      name: golang-external-secrets
+      namespace: golang-external-secrets
+      project: hub
+      chart: golang-external-secrets
+      chartVersion: 0.1.*
+
+    external-dns-operator:
+      name: external-dns-operator
+      namespace: external-dns-operator
+      project: hub
+      chart: external-dns-operator
+      chartVersion: 0.1.*
+
+    fusion-storage:
+      name: fusion-storage
+      namespace: ibm-fusion-access
+      project: hub
+      path: charts/fusion-storage
+      annotations:
+        argocd.argoproj.io/sync-wave: "5"
+      syncPolicy:
+        retry:
+          limit: 200
+        automated: {}
+        syncOptions:
+          - SkipDryRunOnMissingResource=true
+
+  # Only the hub cluster here - managed entities are edge nodes
+  managedClusterGroups: []
