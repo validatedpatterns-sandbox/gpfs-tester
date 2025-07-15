@@ -26,4 +26,5 @@ spec:
   installPlanApproval: Automatic
   name: openshift-fusion-access-operator
   sourceNamespace: openshift-marketplace
+  source: certified-operators
 EOF
